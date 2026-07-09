@@ -1,6 +1,6 @@
 import { CHARACTER_TYPES } from '@/types/character';
 import type { Character, CharacterType } from '@/types/character';
-import { FIELD_CONFIG_BY_TYPE } from './fieldConfig';
+import { ATTRIBUTE_TABS_BY_TYPE } from './fieldConfig';
 import type { FormErrors, FormValues } from './types';
 
 const COMMON_FIELDS: (keyof FormValues)[] = ['name', 'personality'];
@@ -9,15 +9,18 @@ const COMMON_LABELS: Partial<Record<keyof FormValues, string>> = {
   personality: '성향',
 };
 
-const REQUIRED_FIELDS_BY_TYPE = CHARACTER_TYPES.reduce((acc, type) => {
-  acc[type] = [...COMMON_FIELDS, ...FIELD_CONFIG_BY_TYPE[type].map((f) => f.field)];
-  return acc;
-}, {} as Record<CharacterType, (keyof FormValues)[]>);
+const REQUIRED_FIELDS_BY_TYPE = CHARACTER_TYPES.reduce(
+  (acc, type) => {
+    acc[type] = [...COMMON_FIELDS, ...ATTRIBUTE_TABS_BY_TYPE[type].map((tab) => tab.field)];
+    return acc;
+  },
+  {} as Record<CharacterType, (keyof FormValues)[]>,
+);
 
 const FIELD_LABELS = CHARACTER_TYPES.reduce(
   (acc, type) => {
-    FIELD_CONFIG_BY_TYPE[type].forEach((f) => {
-      acc[f.field] = f.label;
+    ATTRIBUTE_TABS_BY_TYPE[type].forEach((tab) => {
+      acc[tab.field] = tab.label;
     });
     return acc;
   },
